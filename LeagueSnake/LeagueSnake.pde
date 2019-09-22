@@ -13,8 +13,13 @@ Segment (int x, int y) {
   this.x=x;
   this.y=y;
 }
-
-
+int getX(){
+  return x;
+}
+int getY(){
+  return y;
+}
+}
 //*
 // ***** GAME VARIABLES *****
 // All the game variables that will be shared by the game methods are here
@@ -28,8 +33,8 @@ int foodY;
 //*
 
 void setup() {
-setSize(500, 500);
-headsnake = new Segment();
+size(500, 500);
+headsnake = new Segment(200,250);
 frameRate(20);
 dropFood();
 }
@@ -48,18 +53,21 @@ void dropFood() {
 //*
 
 void draw() {
-  SetBackgroundColor(0,119,255);
+  background(0,119,255);
   drawFood();
   drawSnake();
 }
 
 void drawFood() {
   //Draw the food
-  
+ rect(foodX,foodY,10,10);
+ fill(192,229,160);
 }
 
 void drawSnake() {
   //Draw the head of the snake followed by its tail
+  rect(headsnake.getX(),headsnake.getY(),10,10);
+  fill(229,160,160);
 }
 
 
@@ -99,10 +107,10 @@ void keyPressed() {
 void move() {
   //Change the location of the Snake head based on the direction it is moving.
   
-    /*
+    
   switch(direction) {
   case UP:
-    // move head up here 
+   // move head up here 
     break;
   case DOWN:
     // move head down here 
@@ -114,7 +122,7 @@ void move() {
     // mystery code goes here 
     break;
   }
-  */
+  
 }
 
 void checkBoundaries() {
