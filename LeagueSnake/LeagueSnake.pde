@@ -19,6 +19,12 @@ int getX(){
 int getY(){
   return y;
 }
+void setX (int x){
+  this.x=x;
+}
+void setY (int y){
+  this.y=y;
+}
 }
 //*
 // ***** GAME VARIABLES *****
@@ -27,6 +33,9 @@ int getY(){
 Segment headsnake;
 int foodX;
 int foodY;
+int directionOfSnake=UP;
+int piecesofFoodSnakeEat;
+ArrayList <Segment> snakeTail = new ArrayList <Segment> ();
 //*
 // ***** SETUP METHODS *****
 // These methods are called at the start of the game.
@@ -55,7 +64,9 @@ void dropFood() {
 void draw() {
   background(0,119,255);
   drawFood();
+  move();
   drawSnake();
+  eat();
 }
 
 void drawFood() {
@@ -78,7 +89,7 @@ void drawSnake() {
 
 void drawTail() {
   //Draw each segment of the tail 
-
+rect(snakeTail.getX(),snakeTail.getY(),10,10);
 }
 
 void manageTail() {
@@ -101,28 +112,41 @@ void checkTailCollision() {
 
 void keyPressed() {
   //Set the direction of the snake according to the arrow keys pressed
-  
+if (keyCode==UP){
+   directionOfSnake=UP;
+ }
+ if (keyCode==DOWN){
+   directionOfSnake=DOWN;
+ }
+ if (keyCode==RIGHT){
+   directionOfSnake=RIGHT;
+ }
+ if (keyCode==LEFT){
+   directionOfSnake=LEFT;
+ }
 }
 
 void move() {
   //Change the location of the Snake head based on the direction it is moving.
-  
-    
-  switch(direction) {
+  switch(directionOfSnake) {
   case UP:
    // move head up here 
+   headsnake.setY(headsnake.getY()-10);
     break;
   case DOWN:
     // move head down here 
+    headsnake.setY(headsnake.getY()+10);
     break;
   case LEFT:
    // figure it out 
+   headsnake.setX(headsnake.getX()-10);
     break;
   case RIGHT:
     // mystery code goes here 
+    headsnake.setX(headsnake.getX()+10);
     break;
   }
-  
+  checkBoundaries();
 }
 
 void checkBoundaries() {
@@ -134,5 +158,8 @@ void checkBoundaries() {
 
 void eat() {
   //When the snake eats the food, its tail should grow and more food appear
-
+if (headsnake.getX()==foodX&&headsnake.getY()==foodY){
+  piecesofFoodSnakeEat++;
+  dropFood();
+}
 }
