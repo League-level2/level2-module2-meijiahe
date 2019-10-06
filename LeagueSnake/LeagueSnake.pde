@@ -36,6 +36,7 @@ int foodY;
 int directionOfSnake=UP;
 int piecesofFoodSnakeEat;
 ArrayList <Segment> snakeTail = new ArrayList <Segment> ();
+
 //*
 // ***** SETUP METHODS *****
 // These methods are called at the start of the game.
@@ -71,14 +72,15 @@ void draw() {
 
 void drawFood() {
   //Draw the food
- rect(foodX,foodY,10,10);
  fill(192,229,160);
+ rect(foodX,foodY,10,10);
 }
 
 void drawSnake() {
   //Draw the head of the snake followed by its tail
-  rect(headsnake.getX(),headsnake.getY(),10,10);
   fill(229,160,160);
+  rect(headsnake.getX(),headsnake.getY(),10,10);
+  manageTail();
 }
 
 
@@ -89,18 +91,31 @@ void drawSnake() {
 
 void drawTail() {
   //Draw each segment of the tail 
-rect(snakeTail.getX(),snakeTail.getY(),10,10);
+  for (int i=0;i<snakeTail.size();i++){
+rect(snakeTail.get(i).getX(),snakeTail.get(i).getY(),10,10);
+  }
 }
 
 void manageTail() {
   //After drawing the tail, add a new segment at the "start" of the tail and remove the one at the "end" 
   //This produces the illusion of the snake tail moving.
-  
+  checkTailCollision();
+  drawTail();
+  Segment tailSnake;
+  tailSnake=new Segment(headsnake.getX(),headsnake.getY());
+  snakeTail.add(tailSnake);
+  snakeTail.remove(0);
 }
 
 void checkTailCollision() {
   //If the snake crosses its own tail, shrink the tail back to one segment
-  
+  piecesofFoodSnakeEat=1;
+  for (int i=0;i<snakeTail.size();i++){
+    if (snakeTail.get(i).getX()==headsnake.getX()&&snakeTail.get(i).getY()==headsnake.getY()){
+      snakeTail.clear();
+      snakeTail.add(new Segment(headsnake.getX(),headsnake.getY()));
+    }
+  }
 }
 
 
@@ -161,5 +176,6 @@ void eat() {
 if (headsnake.getX()==foodX&&headsnake.getY()==foodY){
   piecesofFoodSnakeEat++;
   dropFood();
+  snakeTail.add(new Segment(headsnake.getX(),headsnake.getY()));
 }
 }
